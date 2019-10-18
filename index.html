@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="./assets/css/main.css">
+    <script src="./assets/js/main.js"></script>
+</head>
+
+<body>
+    <div class="container" id="app">
+
+        <test></test>
+        <div class="btn btn-primary disabled btn-lg btn-block">
+            ToDoList
+        </div>
+
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="card" style="width:18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">建立新的代辦事項</h5>
+                        <p class="card-text">
+                            <form>
+                                <div class="form-group">
+                                    <p>
+                                        <input type="text" class="form-control" v-model="taskName"
+                                            placeholder="輸入代辦事項名稱">
+                                    </p>
+
+                                    <p>
+                                        <input type="text" class="form-control" v-model="taskContent"
+                                            placeholder="輸入辦事項內容">
+                                    </p>
+
+                                    <p>
+                                        <select class="form-control" v-model="taskStatus">
+                                            <option :value="item" v-for="item in taskStatusList">{{item}}</option>
+                                        </select>
+                                    </p>
+                                </div>
+                            </form>
+                        </p>
+                        <a @click=" createTask" class="btn btn-primary btn-lg btn-block" style="color:white;">Create
+                            Task</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-5">
+                <div class="card" style="width:18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">搜尋代辦事項</h5>
+                        <p class="card-text">
+                            <form>
+                                <div class="form-group">
+                                    <p>
+                                        <input type="text" class="form-control" v-model="s_taskName"
+                                            placeholder="輸入代辦事項名稱">
+                                    </p>
+
+                                    <p>
+                                        <input type="text" class="form-control" v-model="s_taskContent"
+                                            placeholder="輸入辦事項內容">
+                                    </p>
+
+                                    <p>
+                                        <select class="form-control" v-model="s_taskStatus">
+                                            <option :value="item" v-for="item in taskStatusList">{{item}}</option>
+                                        </select>
+                                    </p>
+                                </div>
+                            </form>
+                        </p>
+                        <a @click="searchTask()" class="btn btn-primary btn-lg btn-block" style="color:white;">Search
+                            Task</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="card" v-for="item in taskData" v-model="
+            taskData">
+            <div class="card-header"
+                :style="{ backgroundColor: item.t_taskstatus == 'success' ? 'green' : item.t_taskstatus == 'waiting' ? '#ffc107' : '#007bff', fontSize: 25 + 'px',color:'white' }">
+                {{item.t_taskname}}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">編號：{{item.t_id}}</h5>
+                <p class="card-text">內容：{{item.t_taskcontent}}</p>
+                <p class="card-text">狀態：{{item.t_taskstatus}}</p>
+                <button type="button" v-modal="modalData.m_id" @click=setTaskID(item.t_id) class="btn btn-warning"
+                    data-toggle="modal" data-target="#exampleModal">
+                    Update Task
+                </button>
+                <a @click=" deleteTask(item.t_id)" class="btn btn-danger">Delete Task</a>
+            </div>
+        </div>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update Task</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">TaskName</span>
+                            </div>
+                            <input type="text" class="form-control" v-model="modalData.m_taskName">
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">TaskDetail</span>
+                            </div>
+                            <input type="text" class="form-control" v-model="modalData.m_taskContent">
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">TaskStatus</span>
+                            </div>
+                            <select class="form-control" v-model="modalData.m_taskStatus">
+                                <option :value="item" v-for="item in taskStatusList"> {{item}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type=" button" class="btn btn-primary" @click="updateTask()">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

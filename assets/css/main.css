@@ -1,0 +1,16 @@
+.container {
+    margin-top: 20px;
+}
+
+.row {
+    justify-content: center
+}
+
+.card {
+    text-align: center;
+    margin-top: 20px;
+}
+
+body {
+    font-family: roboto, microsoft jhenghei, sans-serif;
+}
