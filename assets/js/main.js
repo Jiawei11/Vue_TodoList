@@ -1,14 +1,5 @@
 window.onload = function () {
-    // Vue.component('test', {
-    //     template: '<button @click="count++">{{ count }}</button>',
-    //     data: () => {
-    //         return {
-    //             count: 0
-    //         }
-    //     }
-    // });
-
-    var vm = new Vue({
+    new Vue({
         el: '#app',
         data: {
             taskName: '',
@@ -43,9 +34,6 @@ window.onload = function () {
                     m_taskStatus: 'processing'
                 }
             },
-            showID() {
-                console.log(this.modalData.m_id);
-            },
             createTask() {
                 if (this.taskName == '' || this.taskContent == '') {
                     alert('');
@@ -64,7 +52,6 @@ window.onload = function () {
                 }
             },
             updateTask() {
-                console.log(this.modalData);
                 axios.post('./updateTask.php', {
                         taskID: this.modalData.m_id,
                         taskName: this.modalData.m_taskName,
