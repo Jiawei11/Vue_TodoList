@@ -2,11 +2,11 @@ window.onload = function () {
     new Vue({
         el: '#app',
         data: {
+            taskStatusList: ['processing', 'waiting', 'success'],
+            taskData: null,
             taskName: '',
             taskContent: '',
             taskStatus: 'processing',
-            taskStatusList: ['processing', 'waiting', 'success'],
-            taskData: null,
             s_taskName: '',
             s_taskContent: '',
             s_taskStatus: 'processing',
@@ -14,7 +14,8 @@ window.onload = function () {
                 m_id: 0,
                 m_taskName: '',
                 m_taskContent: '',
-            }
+            },
+            statusMessage: ''
         },
         created() {
             this.getTask();
@@ -44,7 +45,7 @@ window.onload = function () {
                             taskStatus: this.taskStatus
                         })
                         .then((res) => {
-                            console.log(res.data);
+                            this.statusMessage = res.data;
                         })
                         .then(() => {
                             this.getTask();
@@ -59,7 +60,7 @@ window.onload = function () {
                         taskStatus: this.modalData.m_taskStatus
                     })
                     .then((res) => {
-                        console.log(res.data);
+                        this.statusMessage = res.data;
                     })
                     .then(() => {
                         this.getTask();
@@ -74,6 +75,7 @@ window.onload = function () {
                         }
                     })
                     .then((res) => {
+                        this.statusMessage = '搜尋完成';
                         this.taskData = res.data;
                     })
             },
@@ -83,7 +85,7 @@ window.onload = function () {
                             taskID: id
                         })
                         .then((res) => {
-                            console.log(res.data);
+                            this.statusMessage = res.data;
                         })
                         .then(() => {
                             this.getTask();

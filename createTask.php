@@ -8,4 +8,5 @@
     $sql->bindValue('content',$data->taskContent);
     $sql->bindValue('status',$data->taskStatus);
     $sql->execute();
-    echo "Task Message Add Success";
+
+    echo "新增完成。";

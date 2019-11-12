@@ -10,4 +10,4 @@
     $sql->bindValue('id',$data->taskID);
     $sql->execute();
     
-    echo 'Update Task Success';
+    echo '更新完成。';

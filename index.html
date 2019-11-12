@@ -18,8 +18,10 @@
 
 <body>
     <div class="container" id="app">
+        <div class="alert alert-primary" align="center" role="alert">
+            訊息狀態：{{ statusMessage }}
+        </div>
 
-        <test></test>
         <div class="btn btn-primary disabled btn-lg btn-block">
             ToDoList
         </div>
@@ -89,8 +91,7 @@
 
         </div>
 
-        <div class="card" v-for="item in taskData" v-model="
-            taskData">
+        <div class="card" v-for="item in taskData" v-model="taskData">
             <div class="card-header"
                 :style="{ backgroundColor: item.t_taskstatus == 'success' ? 'green' : item.t_taskstatus == 'waiting' ? '#ffc107' : '#007bff', fontSize: 25 + 'px',color:'white' }">
                 {{item.t_taskname}}

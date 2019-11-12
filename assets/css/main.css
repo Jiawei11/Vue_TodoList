@@ -14,3 +14,8 @@
 body {
     font-family: roboto, microsoft jhenghei, sans-serif;
 }
+
+.alert {
+    font-size: 34px;
+    line-height: 50px;
+}

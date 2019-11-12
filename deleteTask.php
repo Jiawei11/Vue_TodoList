@@ -8,4 +8,4 @@
     $sql->bindValue('id',$data->taskID);
     $sql->execute();
     
-    echo 'Delete Task Success';
+    echo '刪除完成。';
